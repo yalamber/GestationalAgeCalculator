@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Pregnancy Calculator</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+            <a class="navbar-brand" href="#top">Pregnancy Calculator</a>
+        </nav>
+        <div class="container-fluid" id="app">
+            <div class="row">
+                <div class="col-sm-12">
+                    Date Format: 
+                    <div class="btn-group btn-group-lg" role="group">
+                        <button type="button" class="btn btn-warning" v-bind:class="[(bs_or_ad == 'AD'?'active':'')]" v-on:click="changeDate('AD')">AD</button>
+                        <button type="button" class="btn btn-warning" v-bind:class="[(bs_or_ad == 'BS'?'active':'')]" v-on:click="changeDate('BS')">BS</button>
+                    </div>
+                    <div class="date-selector-container" v-cloak>
+                        <div v-if="bs_or_ad == 'AD'">
+                            Please Enter LMP in A.D.
+                            <div class="date-selector text-xs-center">
+                                <select class="custom-select" v-model="ad_data.year">
+                                    <option v-for="year in ad_data.years">{{year}}</option>
+                                </select> 
+                                <select class="custom-select" v-model="ad_data.month">
+                                    <option v-for="month in ad_data.months" value="{{$index+1}}">{{month}}</option>
+                                </select>
+                                <select class="custom-select" v-model="ad_data.day">
+                                    <option v-for="day in ad_data_days" value="{{day}}">{{day}}</option>
+                                </select>  
+                            </div>  
+                        </div>
+                        <div v-if="bs_or_ad == 'BS'">
+                            Please Enter LMP in B.S.
+                            <div class="date-selector text-xs-center">
+                                <select class="custom-select" v-model="bs_data.year">
+                                    <option v-for="year in bs_data.years">{{year}}</option>
+                                </select> 
+                                <select class="custom-select" v-model="bs_data.month">
+                                    <option v-for="month in bs_data.months" value="{{$index+1}}">{{month}}</option>
+                                </select>
+                                <select class="custom-select" v-model="bs_data.day">
+                                    <option v-for="day in bs_data_days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <button class="btn btn-danger btn-lg btn-block" v-on:click="calcualteGestationalAge()">Calculate Gestational Age</button>
+                        <!--<button class="btn btn-secondary btn-lg btn-block" v-on:click="calculateEDD()">Calculate EDD</button>-->
+                    </div>
+                    <div v-if="gestationalAge > 0" class="GestionalAge-container" v-cloak>
+                        <h4>Calculated Gestational Age</h4>
+                        <div class="alert alert-info" role="alert">
+                            <strong>{{gestationalAge | weeks}}</strong>
+                        </div>
+                    </div>
+                    <div class="EDD-container">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/plugins.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

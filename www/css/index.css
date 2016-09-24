@@ -1,0 +1,19 @@
+[v-cloak] {
+  display: none;
+}
+body {
+    
+}
+#app {
+    padding-top:80px;
+}
+.date-selector-container {
+    padding-top:20px;
+}
+.date-selector {
+    padding-top:10px;
+}
+.GestionalAge-container {
+    padding-top:20px;
+    text-align:center;
+}
