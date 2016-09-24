@@ -79,13 +79,15 @@
                         </div>
                         <br>
                         <button class="btn btn-danger btn-lg btn-block" v-on:click="calcualteGestationalAge()">Calculate Gestational Age</button>
-                        <!--<button class="btn btn-secondary btn-lg btn-block" v-on:click="calculateEDD()">Calculate EDD</button>-->
                     </div>
                     <div v-if="gestationalAge > 0" class="GestionalAge-container" v-cloak>
                         <h4>Calculated Gestational Age</h4>
-                        <div class="alert alert-info" role="alert">
+                        <div class="alert alert-success" role="alert">
                             <strong>{{gestationalAge | weeks}}</strong>
                         </div>
+                        <!--<div class="alert alert-info" role="alert">
+                            <strong>EDD: </strong>
+                        </div>-->
                     </div>
                     <div class="EDD-container">
 
