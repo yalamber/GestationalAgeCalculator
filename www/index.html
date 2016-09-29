@@ -45,8 +45,8 @@
                 <div class="col-sm-12">
                     Date Format: 
                     <div class="btn-group btn-group-lg" role="group">
-                        <button type="button" class="btn btn-warning" v-bind:class="[(bs_or_ad == 'AD'?'active':'')]" v-on:click="changeDate('AD')">AD</button>
-                        <button type="button" class="btn btn-warning" v-bind:class="[(bs_or_ad == 'BS'?'active':'')]" v-on:click="changeDate('BS')">BS</button>
+                        <button type="button" class="btn btn-warning" v-bind:class="[(bs_or_ad == 'AD'?'active':'')]" v-on:click="changeDateFormat('AD')">AD</button>
+                        <button type="button" class="btn btn-warning" v-bind:class="[(bs_or_ad == 'BS'?'active':'')]" v-on:click="changeDateFormat('BS')">BS</button>
                     </div>
                     <div class="date-selector-container" v-cloak>
                         <div v-if="bs_or_ad == 'AD'">
@@ -56,9 +56,11 @@
                                     <option v-for="year in ad_data.years">{{year}}</option>
                                 </select> 
                                 <select class="custom-select" v-model="ad_data.month">
+                                    <option value="">Month</option>
                                     <option v-for="month in ad_data.months" value="{{$index+1}}">{{month}}</option>
                                 </select>
                                 <select class="custom-select" v-model="ad_data.day">
+                                    <option value="">Date</option>
                                     <option v-for="day in ad_data_days" value="{{day}}">{{day}}</option>
                                 </select>  
                             </div>  
@@ -70,27 +72,26 @@
                                     <option v-for="year in bs_data.years">{{year}}</option>
                                 </select> 
                                 <select class="custom-select" v-model="bs_data.month">
+                                    <option value="">Month</option>
                                     <option v-for="month in bs_data.months" value="{{$index+1}}">{{month}}</option>
                                 </select>
                                 <select class="custom-select" v-model="bs_data.day">
+                                    <option value="">Date</option>
                                     <option v-for="day in bs_data_days" value="{{day}}">{{day}}</option>
                                 </select>
                             </div>
                         </div>
                         <br>
-                        <button class="btn btn-danger btn-lg btn-block" v-on:click="calcualteGestationalAge()">Calculate Gestational Age</button>
+                        <!--<button class="btn btn-danger btn-lg btn-block" v-on:click="calcualteGestationalAge()">Calculate Gestational Age</button>-->
                     </div>
                     <div v-if="gestationalAge > 0" class="GestionalAge-container" v-cloak>
                         <h4>Calculated Gestational Age</h4>
                         <div class="alert alert-success" role="alert">
                             <strong>{{gestationalAge | weeks}}</strong>
                         </div>
-                        <!--<div class="alert alert-info" role="alert">
-                            <strong>EDD: </strong>
-                        </div>-->
-                    </div>
-                    <div class="EDD-container">
-
+                        <div class="alert alert-info" role="alert">
+                            <strong>EDD: {{EDDDate}}</strong>
+                        </div>
                     </div>
                 </div>
             </div>

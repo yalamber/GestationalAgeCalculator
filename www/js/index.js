@@ -12,7 +12,7 @@ var appVM = new Vue({
         ad_data: {
             year: currentFullYear,
             years: _.range(currentFullYear-1, currentFullYear+1),
-            month: 1,
+            month: '',
             months: [
                 'January', 
                 'February', 
@@ -27,12 +27,12 @@ var appVM = new Vue({
                 'November', 
                 'December'
             ],
-            day:1,
+            day: '',
         },
         bs_data: {
             year: currentFullYearBS,
             years: _.range(currentFullYearBS-1, currentFullYearBS+1),
-            month: 1,
+            month: '',
             months: [
                 'Baisakh', 
                 'Jeth', 
@@ -47,9 +47,10 @@ var appVM = new Vue({
                 'Falgun', 
                 'Chaitra'
             ],
-            day: 1
+            day: ''
         },
-        gestationalAge: 0
+        gestationalAge: 0,
+        EDDDate: ''
     },
     computed: {
         ad_data_days: function () {
@@ -63,11 +64,12 @@ var appVM = new Vue({
         }
     },
     methods: {
-        changeDate: function (bs_or_ad) {
+        changeDateFormat: function (bs_or_ad) {
             this.bs_or_ad = 'AD';
             if(bs_or_ad == 'BS') {
                 this.bs_or_ad = 'BS';
             }
+            this.gestationalAge = 0;
         },
         calcualteGestationalAge: function () {
             var LMPDate = new Date(this.ad_data.year, this.ad_data.month-1, this.ad_data.day);
@@ -80,9 +82,38 @@ var appVM = new Vue({
             //now calculate days in between
             var gestationalAgeInDays = daysBetween(LMPDate, currentDate);
             this.gestationalAge = gestationalAgeInDays;
-        },
-        calcualteEDD: function () {
             
+            //calculate EDD
+            var EDDDate = moment(LMPDate).add(7, 'day').subtract(3, 'month').add(1, 'year');
+            this.EDDDate = EDDDate.format('MMMM')+' '+ EDDDate.date()+', '+ EDDDate.year();
+            if(this.bs_or_ad == 'BS') {
+                EDDDate = ad2bs(EDDDate.year() +'/'+ (EDDDate.month()+1) +'/'+ EDDDate.date());
+                this.EDDDate = this.bs_data.months[EDDDate.month-1]+' '+ this.bs_data.day +', '+EDDDate.year;
+            }
+        }, 
+        onDateChange: function (val) {
+            if(
+                val.month != '' 
+                && val.month > 0
+                && val.day != ''
+                && val.day > 0
+            ) {
+                this.calcualteGestationalAge();
+            }
+        }
+    }, 
+    watch: {
+        ad_data: {
+            handler: function (val, oldVal) {
+                this.onDateChange(val);
+            },
+            deep: true
+        },
+        bs_data: {
+            handler: function (val, oldVal) {
+                this.onDateChange(val);
+            },
+            deep: true
         }
     }
 })
